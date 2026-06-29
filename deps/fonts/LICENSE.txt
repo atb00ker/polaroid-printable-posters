@@ -1,0 +1,5 @@
+Archivo Narrow, Libre Franklin, and Work Sans are licensed under the SIL Open Font License 1.1.
+
+- Archivo Narrow: https://github.com/Omnibus-Type/ArchivoNarrow
+- Libre Franklin: https://github.com/impallari/Libre-Franklin
+- Work Sans: https://github.com/weiweithuang/Work-Sans

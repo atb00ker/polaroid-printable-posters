@@ -1,0 +1,424 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Polaroid Printable Poster</title>
+    <link rel="stylesheet" href="css/app.css" />
+  </head>
+  <body>
+    <main class="app">
+      <header class="app-header">
+        <h1>Polaroid Printable Poster</h1>
+        <a
+          class="app-about"
+          href="https://github.com/atb00ker/polaroid-printable-posters"
+          target="_blank"
+          rel="noopener noreferrer"
+          >About</a
+        >
+      </header>
+
+      <nav class="app-tabs" role="tablist" aria-label="Poster modes">
+        <button
+          type="button"
+          role="tab"
+          id="tab-image"
+          class="app-tab"
+          aria-selected="true"
+          aria-controls="panel-image"
+        >
+          Create Image
+        </button>
+        <button
+          type="button"
+          role="tab"
+          id="tab-pdf"
+          class="app-tab"
+          aria-selected="false"
+          aria-controls="panel-pdf"
+        >
+          Create PDF
+        </button>
+      </nav>
+
+      <p id="page-subtitle" class="subtitle">
+        Upload an image and metadata to generate a printable poster.
+      </p>
+
+      <div id="panel-image" role="tabpanel" aria-labelledby="tab-image">
+        <section id="form-section">
+          <form id="poster-form">
+            <div class="field">
+              <label for="image"
+                >Image
+                <span class="field-optional"
+                  >(required, square works best)</span
+                ></label
+              >
+              <input
+                type="file"
+                id="image"
+                name="image"
+                accept="image/*"
+                required
+              />
+              <p id="image-error" class="error" hidden>
+                Please select an image.
+              </p>
+            </div>
+
+            <div class="field">
+              <label for="name"
+                >Name <span class="field-optional">(optional)</span></label
+              >
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="Interstellar"
+              />
+            </div>
+
+            <div class="field">
+              <label for="year"
+                >Year <span class="field-optional">(optional)</span></label
+              >
+              <input type="text" id="year" name="year" placeholder="2014" />
+            </div>
+
+            <fieldset>
+              <legend>
+                Metadata <span class="field-optional">(optional)</span>
+              </legend>
+              <div class="metadata-header">
+                <span>Key</span>
+                <span>Value</span>
+                <span></span>
+              </div>
+              <div id="metadata-fields"></div>
+              <button type="button" id="add-field" class="btn btn-secondary">
+                Add field
+              </button>
+            </fieldset>
+
+            <div class="field">
+              <label for="paragraph"
+                >Paragraph
+                <span class="field-optional"
+                  >(optional, supports &lt;br&gt; and &lt;hr&gt;)</span
+                ></label
+              >
+              <textarea
+                id="paragraph"
+                name="paragraph"
+                placeholder="A short description or note… Use &lt;br&gt; for a line break and &lt;hr&gt; for a divider."
+              ></textarea>
+            </div>
+
+            <div class="field">
+              <label>Font</label>
+              <div
+                id="font-picker-form"
+                class="font-picker"
+                role="radiogroup"
+                aria-label="Poster font"
+              ></div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">
+                Generate preview
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <section id="preview-section" hidden>
+          <div class="preview-header">
+            <h2>Preview</h2>
+            <button type="button" id="edit-btn" class="btn btn-secondary">
+              Edit
+            </button>
+          </div>
+
+          <div class="field font-picker-preview-wrap">
+            <label>Font</label>
+            <div
+              id="font-picker-preview"
+              class="font-picker"
+              role="radiogroup"
+              aria-label="Poster font"
+            ></div>
+          </div>
+
+          <div class="canvas-wrap">
+            <canvas id="poster-canvas"></canvas>
+          </div>
+
+          <div class="download-panel">
+            <div class="download-toolbar">
+              <div class="download-actions">
+                <button type="button" id="download-png" class="btn btn-primary">
+                  Download PNG
+                </button>
+                <button
+                  type="button"
+                  id="download-jpeg"
+                  class="btn btn-primary"
+                >
+                  Download JPEG
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <div id="panel-pdf" role="tabpanel" aria-labelledby="tab-pdf" hidden>
+        <section id="pdf-form-section">
+          <form id="pdf-poster-form">
+            <div class="poster-block">
+              <h2 class="poster-block-title">Poster 1</h2>
+
+              <div class="field">
+                <label for="pdf-image-1"
+                  >Image
+                  <span class="field-optional"
+                    >(required, square works best)</span
+                  ></label
+                >
+                <input
+                  type="file"
+                  id="pdf-image-1"
+                  name="pdf-image-1"
+                  accept="image/*"
+                  required
+                />
+                <p id="pdf-image-1-error" class="error" hidden>
+                  Please select an image.
+                </p>
+              </div>
+
+              <div class="field">
+                <label for="pdf-name-1"
+                  >Name <span class="field-optional">(optional)</span></label
+                >
+                <input
+                  type="text"
+                  id="pdf-name-1"
+                  name="pdf-name-1"
+                  placeholder="Interstellar"
+                />
+              </div>
+
+              <div class="field">
+                <label for="pdf-year-1"
+                  >Year <span class="field-optional">(optional)</span></label
+                >
+                <input
+                  type="text"
+                  id="pdf-year-1"
+                  name="pdf-year-1"
+                  placeholder="2014"
+                />
+              </div>
+
+              <fieldset>
+                <legend>
+                  Metadata <span class="field-optional">(optional)</span>
+                </legend>
+                <div class="metadata-header">
+                  <span>Key</span>
+                  <span>Value</span>
+                  <span></span>
+                </div>
+                <div id="pdf-metadata-fields-1"></div>
+                <button
+                  type="button"
+                  id="pdf-add-field-1"
+                  class="btn btn-secondary"
+                >
+                  Add field
+                </button>
+              </fieldset>
+
+              <div class="field">
+                <label for="pdf-paragraph-1"
+                  >Paragraph
+                  <span class="field-optional"
+                    >(optional, supports &lt;br&gt; and &lt;hr&gt;)</span
+                  ></label
+                >
+                <textarea
+                  id="pdf-paragraph-1"
+                  name="pdf-paragraph-1"
+                  placeholder="A short description or note… Use &lt;br&gt; for a line break and &lt;hr&gt; for a divider."
+                ></textarea>
+              </div>
+
+              <div class="field">
+                <label>Font</label>
+                <div
+                  id="font-picker-pdf-1-form"
+                  class="font-picker"
+                  role="radiogroup"
+                  aria-label="Poster 1 font"
+                ></div>
+              </div>
+            </div>
+
+            <div class="poster-block">
+              <h2 class="poster-block-title">Poster 2</h2>
+
+              <div class="field">
+                <label for="pdf-image-2"
+                  >Image
+                  <span class="field-optional"
+                    >(required, square works best)</span
+                  ></label
+                >
+                <input
+                  type="file"
+                  id="pdf-image-2"
+                  name="pdf-image-2"
+                  accept="image/*"
+                  required
+                />
+                <p id="pdf-image-2-error" class="error" hidden>
+                  Please select an image.
+                </p>
+              </div>
+
+              <div class="field">
+                <label for="pdf-name-2"
+                  >Name <span class="field-optional">(optional)</span></label
+                >
+                <input
+                  type="text"
+                  id="pdf-name-2"
+                  name="pdf-name-2"
+                  placeholder="Inception"
+                />
+              </div>
+
+              <div class="field">
+                <label for="pdf-year-2"
+                  >Year <span class="field-optional">(optional)</span></label
+                >
+                <input
+                  type="text"
+                  id="pdf-year-2"
+                  name="pdf-year-2"
+                  placeholder="2010"
+                />
+              </div>
+
+              <fieldset>
+                <legend>
+                  Metadata <span class="field-optional">(optional)</span>
+                </legend>
+                <div class="metadata-header">
+                  <span>Key</span>
+                  <span>Value</span>
+                  <span></span>
+                </div>
+                <div id="pdf-metadata-fields-2"></div>
+                <button
+                  type="button"
+                  id="pdf-add-field-2"
+                  class="btn btn-secondary"
+                >
+                  Add field
+                </button>
+              </fieldset>
+
+              <div class="field">
+                <label for="pdf-paragraph-2"
+                  >Paragraph
+                  <span class="field-optional"
+                    >(optional, supports &lt;br&gt; and &lt;hr&gt;)</span
+                  ></label
+                >
+                <textarea
+                  id="pdf-paragraph-2"
+                  name="pdf-paragraph-2"
+                  placeholder="A short description or note… Use &lt;br&gt; for a line break and &lt;hr&gt; for a divider."
+                ></textarea>
+              </div>
+
+              <div class="field">
+                <label>Font</label>
+                <div
+                  id="font-picker-pdf-2-form"
+                  class="font-picker"
+                  role="radiogroup"
+                  aria-label="Poster 2 font"
+                ></div>
+              </div>
+            </div>
+
+            <div class="form-actions">
+              <button type="submit" class="btn btn-primary">
+                Generate preview
+              </button>
+            </div>
+          </form>
+        </section>
+
+        <section id="pdf-preview-section" hidden>
+          <div class="preview-header">
+            <h2>Preview</h2>
+            <button type="button" id="pdf-edit-btn" class="btn btn-secondary">
+              Edit
+            </button>
+          </div>
+
+          <div class="pdf-preview-fonts">
+            <div class="field font-picker-preview-wrap">
+              <label>Poster 1 font</label>
+              <div
+                id="font-picker-pdf-1-preview"
+                class="font-picker"
+                role="radiogroup"
+                aria-label="Poster 1 font"
+              ></div>
+            </div>
+
+            <div class="field font-picker-preview-wrap">
+              <label>Poster 2 font</label>
+              <div
+                id="font-picker-pdf-2-preview"
+                class="font-picker"
+                role="radiogroup"
+                aria-label="Poster 2 font"
+              ></div>
+            </div>
+          </div>
+
+          <div class="canvas-wrap sheet-canvas-wrap">
+            <canvas id="pdf-sheet-canvas"></canvas>
+          </div>
+
+          <div class="download-panel">
+            <div class="download-toolbar">
+              <div class="download-actions">
+                <button type="button" id="download-pdf" class="btn btn-primary">
+                  Download PDF
+                </button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <script src="../deps/js/jspdf.umd.min.js"></script>
+    <script src="js/fonts.js"></script>
+    <script src="js/poster.js"></script>
+    <script src="js/shared.js"></script>
+    <script src="js/tabs.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/pdf.js"></script>
+  </body>
+</html>
